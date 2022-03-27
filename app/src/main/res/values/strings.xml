@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Sixth task</string>
+
+    <string name="alert_error_loading">Data not aviable</string>
+    <string name="snackbar_btn_return">Return to table</string>
+    <string name="snackbar_btn_reload">Return to table</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#FF0000</color>
+
+    // Green Teal Yellow Nature
+    <color name="Green">#019267</color>
+    <color name="Teal">#00C897</color>
+    <color name="Yellow">#FFD365</color>
+    <color name="Nature">#FDFFA9</color>
+
+    <color name="primaryTeal">#00c897</color>
+    <color name="primaryLightTeal">#5efcc8</color>
+    <color name="primaryDarkTeal">#009669</color>
+    <color name="secondaryNature">#fdffa9</color>
+    <color name="secondaryLightNature">#ffffdb</color>
+    <color name="secondaryDarkNature">#c9cc79</color>
+    <color name="primaryTextTeal">#000000</color>
+    <color name="secondaryTextNature">#000000</color>
+
+    <color name="primaryGreen">#019267</color>
+    <color name="primaryLightGreen">#4fc395</color>
+    <color name="primaryDarkGreen">#00633c</color>
+    <color name="secondaryYellow">#ffd365</color>
+    <color name="secondaryLightYellow">#ffff96</color>
+    <color name="secondaryDarkYellow">#c9a235</color>
+    <color name="primaryTextGreen">#000000</color>
+    <color name="secondaryTextYellow">#000000</color>
+</resources>
