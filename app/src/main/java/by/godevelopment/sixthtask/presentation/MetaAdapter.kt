@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import by.godevelopment.sixthtask.databinding.ItemRvBinding
 
-class MetaAdapter(
-//    private val onClick: (String) -> Any
-) : RecyclerView.Adapter<MetaAdapter.ItemViewHolder>() {
+class MetaAdapter() : RecyclerView.Adapter<MetaAdapter.ItemViewHolder>() {
 
     private val diffCallback = object : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
@@ -36,7 +34,9 @@ class MetaAdapter(
     }
 
     override fun onBindViewHolder(holder: MetaAdapter.ItemViewHolder, position: Int) {
+        val item = imagesList[position]
         holder.binding.apply {
+            fieldName.text = item
         }
     }
 

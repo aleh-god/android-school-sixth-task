@@ -12,19 +12,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/input_text"
+        app:layout_constraintEnd_toStartOf="@id/input_number"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="3dp"
         android:padding="5dp"
-        android:textColor="?attr/colorOnBackground"
         android:gravity="center"
-        tools:text="Текстовое поле"
+        android:textColor="?attr/colorOnBackground"
+        tools:text="Числовое поле"
         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
         />
 
     <EditText
-        android:id="@+id/input_text"
+        android:id="@+id/input_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,11 +35,9 @@
         android:padding="5dp"
         android:textColor="?attr/colorOnBackground"
         android:gravity="center"
-        android:maxLines="1"
-        android:inputType="text"
-        android:scrollHorizontally="true"
+        android:inputType="numberDecimal"
         android:ellipsize="end"
-        tools:text="Текстовое поле"
+        tools:text="Числовое поле"
         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
         />
 

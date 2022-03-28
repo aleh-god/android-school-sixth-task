@@ -1,6 +1,7 @@
 package by.godevelopment.sixthtask.presentation
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,11 +11,18 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.godevelopment.sixthtask.R
 import by.godevelopment.sixthtask.appComponent
 import by.godevelopment.sixthtask.commons.TAG
 import by.godevelopment.sixthtask.databinding.FragmentListBinding
 import by.godevelopment.sixthtask.di.factory.ViewModelFactory
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -57,17 +65,14 @@ class ListFragment : Fragment() {
                     binding.progress.visibility = View.GONE
                 } else binding.progress.visibility = View.VISIBLE
 
-                binding.message.text = uiState.dataList
-
-//                val adapter = MetaAdapter().apply {
-//                    imagesList = uiState.imagesList
-//                }
-//                binding.rv.adapter = adapter
-//                val layoutManager =
-//                    if (isTablet()) GridLayoutManager(requireContext(), 3)
-//                    else GridLayoutManager(requireContext(), 2)
-//                binding.rv.layoutManager = layoutManager
-
+                setupToolbar(uiState.title)
+                setupImage(uiState.imageLink)
+                binding.recyclerView.apply {
+                    adapter = MetaAdapter().apply {
+                        imagesList = uiState.dataList
+                    }
+                    layoutManager = LinearLayoutManager(requireContext())
+                }
             }
         }
     }
@@ -81,9 +86,53 @@ class ListFragment : Fragment() {
                     Snackbar.LENGTH_LONG
                 )
                     .setAction(getString(R.string.snackbar_btn_reload))
-                    { viewModel.fetchImagesList() }
+                    { viewModel.fetchMetaModel() }
                     .show()
             }
+        }
+    }
+
+    private fun setupImage(src: String) {
+//        if (src != null) {
+            Glide.with(binding.root)
+                .load(src)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .error(R.drawable.image_not_loaded)
+                .placeholder(R.drawable.image)
+//                .listener(object : RequestListener<Drawable> {
+//                    override fun onLoadFailed(
+//                        e: GlideException?,
+//                        model: Any?,
+//                        target: Target<Drawable>?,
+//                        isFirstResource: Boolean
+//                    ): Boolean {
+//                        showErrorResponse()
+//                        return false
+//                    }
+//                    override fun onResourceReady(
+//                        resource: Drawable?,
+//                        model: Any?,
+//                        target: Target<Drawable>?,
+//                        dataSource: DataSource?,
+//                        isFirstResource: Boolean
+//                    ): Boolean {
+//                        _binding?.let {
+//                            it.progress.visibility = View.GONE
+//                        }
+//                        return false
+//                    }
+//                })
+                .into(binding.image)
+//        } else {
+//            showErrorResponse()
+//        }
+    }
+
+    private fun setupToolbar(titleText: String) {
+        binding.toolbar.apply {
+            title = titleText
+            subtitle = context.resources.getString(R.string.app_name)
         }
     }
 }

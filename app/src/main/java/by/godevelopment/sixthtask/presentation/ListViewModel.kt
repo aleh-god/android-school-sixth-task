@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.godevelopment.sixthtask.R
+import by.godevelopment.sixthtask.commons.INIT_STRING_VALUE
 import by.godevelopment.sixthtask.commons.TAG
 import by.godevelopment.sixthtask.data.datamodels.MetaModel
 import by.godevelopment.sixthtask.domain.helpers.StringHelper
@@ -28,10 +29,10 @@ class ListViewModel @Inject constructor(
     private var fetchJob: Job? = null
 
     init {
-        fetchImagesList()
+        fetchMetaModel()
     }
 
-    fun fetchImagesList() {
+    fun fetchMetaModel() {
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch {
             getMetaModelUseCase()
@@ -42,7 +43,7 @@ class ListViewModel @Inject constructor(
                     )
                 }
                 .catch { exception ->
-                    Log.i(TAG, "TableViewViewModel: .catch ${exception.message}")
+                    Log.i(TAG, "viewModelScope.catch ${exception.message}")
                     _uiState.value = UiState(
                         isFetchingData = false
                     )
@@ -50,10 +51,14 @@ class ListViewModel @Inject constructor(
                     _uiEvent.emit(stringHelper.getString(R.string.alert_error_loading))
                 }
                 .collect {
-                    Log.i(TAG, "viewModelScope.launch: .collect = ${it}")
+                    Log.i(TAG, "viewModelScope.launch: .collect = $it")
                     _uiState.value = UiState(
                         isFetchingData = false,
-                        dataList = it.toString()
+                        title = it.title ?: INIT_STRING_VALUE,
+                        imageLink = it.image ?: INIT_STRING_VALUE,
+                        dataList = it.fields?.map { filed ->
+                            filed.type ?: INIT_STRING_VALUE
+                        } ?: listOf()
                     )
                 }
         }
@@ -61,6 +66,8 @@ class ListViewModel @Inject constructor(
 
     data class UiState(
         val isFetchingData: Boolean = false,
-        val dataList: String = "null" // List<String> = listOf()
+        val title: String = INIT_STRING_VALUE,
+        val imageLink: String = INIT_STRING_VALUE,
+        val dataList: List<String> = listOf()
     )
 }

@@ -4,4 +4,6 @@
     <string name="alert_error_loading">Data not aviable</string>
     <string name="snackbar_btn_return">Return to table</string>
     <string name="snackbar_btn_reload">Return to table</string>
+    <string name="descr_bottom_image">Base bottom image</string>
+    <string name="btn_send_result_text">SEND RESULT</string>
 </resources>
