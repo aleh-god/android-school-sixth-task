@@ -17,9 +17,9 @@ class ConvertMetaModelToUiStateModelUseCase @Inject constructor(
                 Log.i(TAG, "ConvertMetaUseCase: ${field.values}")
                 ListItemModel(
                     id = index,
-                    title = field.title,
-                    name = field.name,
-                    type = field.type,
+                    title = field.title !!,
+                    name = field.name !!,
+                    type = field.type !!,
                     values = field.values,
                     haseFocus = index == 0,
                     itemViewType = convertTextLabelToItemType(field.type)

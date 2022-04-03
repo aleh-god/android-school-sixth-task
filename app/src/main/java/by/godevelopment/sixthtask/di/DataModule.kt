@@ -25,6 +25,11 @@ class DataModule {
         .build()
 
     @Provides
+    fun provideMoshiConverterFactory(moshi: Moshi): MoshiConverterFactory = MoshiConverterFactory
+        .create(moshi)
+        .asLenient()
+
+    @Provides
     @Singleton
     fun provideOkHttpClient() = OkHttpClient.Builder()
         .addInterceptor(
@@ -36,11 +41,12 @@ class DataModule {
     fun provideRetrofit(
         moshi: Moshi,
         BASE_URL : String,
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
+        moshiConverterFactory: MoshiConverterFactory
     ) : Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(okHttpClient)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(moshiConverterFactory)
         .build()
 
     @Provides

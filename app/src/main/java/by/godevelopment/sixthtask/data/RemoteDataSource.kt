@@ -1,5 +1,7 @@
 package by.godevelopment.sixthtask.data
 
+import by.godevelopment.sixthtask.data.datamodels.RequestModel
+import by.godevelopment.sixthtask.data.datamodels.ResultModel
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
@@ -7,4 +9,6 @@ class RemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getMetaModel() = metaApi.getMetaModel()
+    suspend fun sendFormModel(requestModel: RequestModel): ResultModel
+        = metaApi.sendFormModel(requestModel)
 }
