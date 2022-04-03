@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,6 +18,7 @@ import by.godevelopment.sixthtask.appComponent
 import by.godevelopment.sixthtask.commons.TAG
 import by.godevelopment.sixthtask.databinding.FragmentListBinding
 import by.godevelopment.sixthtask.di.factory.ViewModelFactory
+import by.godevelopment.sixthtask.presentation.adapter.MetaAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -38,6 +40,11 @@ class ListFragment : Fragment() {
     lateinit var viewModel: ListViewModel
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
+
+    private val setResultToHeader: (Int, String, String?) -> Unit = { id, key, resultOrNull ->
+        viewModel.setResultToList(id, key, resultOrNull)
+        Toast.makeText(requireContext(), "ResultToList: $key to $resultOrNull" , Toast.LENGTH_SHORT)
+    }
 
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)
@@ -64,13 +71,10 @@ class ListFragment : Fragment() {
                     Log.i(TAG, "setupUi: uiState.isFetchingData = false")
                     binding.progress.visibility = View.GONE
                 } else binding.progress.visibility = View.VISIBLE
-
                 setupToolbar(uiState.title)
                 setupImage(uiState.imageLink)
                 binding.recyclerView.apply {
-                    adapter = MetaAdapter().apply {
-                        imagesList = uiState.dataList
-                    }
+                    adapter = MetaAdapter(uiState.dataList, setResultToHeader)
                     layoutManager = LinearLayoutManager(requireContext())
                 }
             }
@@ -134,5 +138,10 @@ class ListFragment : Fragment() {
             title = titleText
             subtitle = context.resources.getString(R.string.app_name)
         }
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }

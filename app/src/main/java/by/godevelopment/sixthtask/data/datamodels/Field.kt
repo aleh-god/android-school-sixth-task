@@ -1,6 +1,5 @@
 package by.godevelopment.sixthtask.data.datamodels
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -13,5 +12,5 @@ data class Field(
     @Json(name = "type")
     val type: String?,
     @Json(name = "values")
-    val values: Values?
+    val values: Map<String, String>? // Values?
 )

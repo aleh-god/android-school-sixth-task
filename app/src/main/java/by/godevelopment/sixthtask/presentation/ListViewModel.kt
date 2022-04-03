@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import by.godevelopment.sixthtask.R
 import by.godevelopment.sixthtask.commons.INIT_STRING_VALUE
 import by.godevelopment.sixthtask.commons.TAG
-import by.godevelopment.sixthtask.data.datamodels.MetaModel
 import by.godevelopment.sixthtask.domain.helpers.StringHelper
-import by.godevelopment.sixthtask.domain.usecases.GetMetaModelUseCase
+import by.godevelopment.sixthtask.domain.models.ListItemModel
+import by.godevelopment.sixthtask.domain.usecases.ConvertMetaModelToUiStateModelUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
-    private val getMetaModelUseCase: GetMetaModelUseCase,
+    private val convertMetaModelToUiStateModelUseCase: ConvertMetaModelToUiStateModelUseCase,
     private val stringHelper: StringHelper
 ) : ViewModel() {
 
@@ -35,7 +35,7 @@ class ListViewModel @Inject constructor(
     fun fetchMetaModel() {
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch {
-            getMetaModelUseCase()
+            convertMetaModelToUiStateModelUseCase()
                 .onStart {
                     Log.i(TAG, "viewModelScope.launch: .onStart")
                     _uiState.value = UiState(
@@ -56,18 +56,31 @@ class ListViewModel @Inject constructor(
                         isFetchingData = false,
                         title = it.title ?: INIT_STRING_VALUE,
                         imageLink = it.image ?: INIT_STRING_VALUE,
-                        dataList = it.fields?.map { filed ->
-                            filed.type ?: INIT_STRING_VALUE
-                        } ?: listOf()
+                        dataList = it.fields ?: listOf()
                     )
                 }
         }
+    }
+
+    fun setResultToList(id: Int, key: String, resultOrNull: String?) {
+        Log.i(TAG, "MainViewModel setResultToList: $key to $resultOrNull")
+        val newList = uiState.value.dataList
+            .filter { it.id != id }
+            .toMutableList()
+        val newItem = uiState.value.dataList
+            .first { it.id == id }
+            .copy(result = resultOrNull)
+        newList.add(newItem)
+        newList.sortedBy { it.id }
+        _uiState.value = uiState.value.copy(
+            dataList = newList
+        )
     }
 
     data class UiState(
         val isFetchingData: Boolean = false,
         val title: String = INIT_STRING_VALUE,
         val imageLink: String = INIT_STRING_VALUE,
-        val dataList: List<String> = listOf()
+        val dataList: List<ListItemModel> = listOf()
     )
 }
