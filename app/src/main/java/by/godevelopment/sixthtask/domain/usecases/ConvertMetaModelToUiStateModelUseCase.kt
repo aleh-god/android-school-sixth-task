@@ -14,7 +14,6 @@ class ConvertMetaModelToUiStateModelUseCase @Inject constructor(
     operator fun invoke(): Flow<UiStateModel> {
         return getMetaModelUseCase().map { metaModel ->
             val newFields = metaModel.fields?.mapIndexed { index, field ->
-                Log.i(TAG, "ConvertMetaUseCase: ${field.values}")
                 ListItemModel(
                     id = index,
                     title = field.title !!,

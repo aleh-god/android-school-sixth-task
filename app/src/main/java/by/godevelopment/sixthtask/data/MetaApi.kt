@@ -12,7 +12,7 @@ interface MetaApi {
     @GET("meta")
     suspend fun getMetaModel(): MetaModel
 
-    @POST("data")
+    @POST("data/")
     suspend fun sendFormModel(@Body requestModel: RequestModel): ResultModel
 }
 
