@@ -15,7 +15,10 @@ import by.godevelopment.sixthtask.appComponent
 import by.godevelopment.sixthtask.commons.TAG
 import by.godevelopment.sixthtask.databinding.FragmentListBinding
 import by.godevelopment.sixthtask.di.factory.ViewModelFactory
+import by.godevelopment.sixthtask.domain.models.DialogEvent
+import by.godevelopment.sixthtask.domain.models.SnackbarEvent
 import by.godevelopment.sixthtask.presentation.adapter.MetaAdapter
+import by.godevelopment.sixthtask.presentation.dialogfragments.ResultDialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
@@ -91,15 +94,20 @@ class ListFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.uiEvent.collect {
                 Log.i(TAG, "ListFragment setupEvent: viewModel.uiEvent.collect")
-                Snackbar.make(binding.root,
-                    it,
-                    Snackbar.LENGTH_LONG
-                )
-                    .setAction(getString(R.string.snackbar_btn_reload))
-                    { viewModel.fetchMetaModel() }
-                    .show()
+                when(it) {
+                    is SnackbarEvent -> Snackbar
+                            .make(binding.root, it.message, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(getString(R.string.snackbar_btn_reload))
+                            { viewModel.fetchMetaModel() }
+                            .show()
+                    is DialogEvent -> showDialog(it.message)
+                }
             }
         }
+    }
+
+    private fun showDialog(message: String) {
+        ResultDialogFragment.showDialog(parentFragmentManager, message)
     }
 
     private fun setupImage(src: String?) {

@@ -7,7 +7,7 @@ import by.godevelopment.sixthtask.R
 import by.godevelopment.sixthtask.commons.INIT_STRING_VALUE
 import by.godevelopment.sixthtask.commons.TAG
 import by.godevelopment.sixthtask.domain.helpers.StringHelper
-import by.godevelopment.sixthtask.domain.models.ListItemModel
+import by.godevelopment.sixthtask.domain.models.*
 import by.godevelopment.sixthtask.domain.usecases.ConvertMetaModelToUiStateModelUseCase
 import by.godevelopment.sixthtask.domain.usecases.ConvertResultToFormModelUseCase
 import kotlinx.coroutines.Job
@@ -28,8 +28,8 @@ class ListViewModel @Inject constructor(
     private val _listState: MutableStateFlow<List<ListItemModel>> = MutableStateFlow(listOf())
     val listState: StateFlow<List<ListItemModel>> = _listState
 
-    private val _uiEvent  = MutableSharedFlow<String>(0)
-    val uiEvent: SharedFlow<String> = _uiEvent
+    private val _uiEvent  = MutableSharedFlow<ListFragmentEvent>(0)
+    val uiEvent: SharedFlow<ListFragmentEvent> = _uiEvent
 
     private var fetchJob: Job? = null
 
@@ -52,7 +52,7 @@ class ListViewModel @Inject constructor(
                         isFetchingData = false
                     )
                     delay(1000)
-                    _uiEvent.emit(stringHelper.getString(R.string.alert_error_loading))
+                    _uiEvent.emit(SnackbarEvent(stringHelper.getString(R.string.alert_error_loading)))
                 }
                 .collect {
                     _uiState.value = UiState(
@@ -86,10 +86,10 @@ class ListViewModel @Inject constructor(
             try {
                 val resultState = _listState.value
                 val response = convertResultToFormModelUseCase(resultState).result
-                _uiEvent.emit(response)
+                _uiEvent.emit(DialogEvent(response))
                 Log.i(TAG, "sendFormToRemote: response = $response")
             } catch (e: Exception) {
-                _uiEvent.emit(stringHelper.getString(R.string.alert_error_loading))
+                _uiEvent.emit(SnackbarEvent(stringHelper.getString(R.string.alert_error_loading)))
                 Log.i(TAG, "sendFormToRemote: catch = ${e.message}")
             }
         }

@@ -6,4 +6,6 @@
     <string name="snackbar_btn_reload">Return to table</string>
     <string name="descr_bottom_image">Base bottom image</string>
     <string name="btn_send_result_text">SEND RESULT</string>
+    <string name="dialog_title_text">Result from remote:</string>
+    <string name="dialog_neutral_btn_text">Ok</string>
 </resources>
