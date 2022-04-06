@@ -1,12 +1,31 @@
 package by.godevelopment.sixthtask.presentation.adapter
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import by.godevelopment.sixthtask.domain.models.ListItemModel
 
 class MetaAdapter (
-    private val metaList: List<ListItemModel>,
-    setResult: (Int, String, String) -> Unit
+    setResult: (Int, String, String?) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val diffCallBack
+            = object : DiffUtil.ItemCallback<ListItemModel>() {
+        override fun areItemsTheSame(oldItem: ListItemModel, newItem: ListItemModel): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItem: ListItemModel, newItem: ListItemModel): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+    private val differ = AsyncListDiffer(this, diffCallBack)
+    var metaList: List<ListItemModel>
+        get() = differ.currentList
+        set(value) {
+            differ.submitList(value)
+        }
 
     private val viewHolderFactory: ViewHolderFactory = ViewHolderFactory(setResult)
 

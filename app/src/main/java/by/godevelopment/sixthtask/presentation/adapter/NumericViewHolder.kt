@@ -9,19 +9,24 @@ import by.godevelopment.sixthtask.domain.models.ListItemModel
 
 class NumericViewHolder(
     private val binding: ItemInputNumericBinding,
-    private val setResultToHeader: (Int, String, String) -> Unit
+    private val setResultToList: (Int, String, String?) -> Unit
 ) : RecyclerView.ViewHolder(binding.root), MetaViewHolder {
     override fun bind(item: ListItemModel) {
         Log.i(TAG, "NumericViewHolder bind: $item")
         binding.fieldName.text = item.title
         binding.inputNumber.apply {
-            var textBuffer: Double? = item.result?.toDoubleOrNull()
-            textBuffer?.let {
-                setText(it.toString())
+            var textBuffer: String? = item.result
+            setText(textBuffer)
+            addTextChangedListener {
+                Log.i(TAG, "NumericViewHolder: addTextChangedListener $it")
+                textBuffer = it.toString()
             }
-            addTextChangedListener { textBuffer = it.toString().toDoubleOrNull() }
             setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) { setResultToHeader(item.id, item.name, textBuffer.toString()) }
+                Log.i(TAG, "NumericViewHolder: setOnFocusChangeListener $hasFocus")
+                if (!hasFocus) {
+                    Log.i(TAG, "NumericViewHolder: setResultToList ${item.name} to $textBuffer")
+                    setResultToList(item.id, item.name, textBuffer)
+                }
             }
         }
     }

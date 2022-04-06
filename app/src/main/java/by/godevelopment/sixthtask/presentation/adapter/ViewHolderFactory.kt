@@ -11,7 +11,7 @@ import by.godevelopment.sixthtask.databinding.ItemInputNumericBinding
 import by.godevelopment.sixthtask.databinding.ItemInputTextBinding
 
 class ViewHolderFactory(
-    private val setResult: (Int, String, String) -> Unit
+    private val setResult: (Int, String, String?) -> Unit
 ) {
     fun buildHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {

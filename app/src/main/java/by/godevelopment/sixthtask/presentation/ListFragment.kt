@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -35,9 +34,8 @@ class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
-    private val setResultToHeader: (Int, String, String) -> Unit = { id, key, resultOrNull ->
+    private val setResultToHeader: (Int, String, String?) -> Unit = { id, key, resultOrNull ->
         viewModel.setResultToList(id, key, resultOrNull)
-        Toast.makeText(requireContext(), "ListFragment ResultToList: $key to $resultOrNull" , Toast.LENGTH_SHORT)
     }
 
     override fun onAttach(context: Context) {
@@ -66,11 +64,8 @@ class ListFragment : Fragment() {
 
     private fun setupUi() {
         lifecycleScope.launchWhenStarted {
-            Log.i(TAG, "ListFragment setupUi: lifecycleScope.launchWhenStarted")
             viewModel.uiState.collect { uiState ->
-                Log.i(TAG, "ListFragment setupUi: launchWhenStarted Data = $uiState")
                 if (!uiState.isFetchingData) {
-                    Log.i(TAG, "ListFragment setupUi: uiState.isFetchingData = false")
                     binding.progress.visibility = View.GONE
                 } else binding.progress.visibility = View.VISIBLE
                 setupToolbar(uiState.title)
@@ -80,13 +75,13 @@ class ListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        lifecycleScope.launchWhenStarted {
-            Log.i(TAG, "ListFragment setupRecyclerView: lifecycleScope.launchWhenStarted")
-            viewModel.listState.collect { list ->
-                Log.i(TAG, "ListFragment setupUi: launchWhenStarted Data = $list")
-                binding.recyclerView.apply {
-                    adapter = MetaAdapter(list, setResultToHeader)
-                    layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = MetaAdapter(setResultToHeader)
+            lifecycleScope.launchWhenStarted {
+                viewModel.listState.collect { list ->
+                    Log.i(TAG, "ListFragment setupUi: launchWhenStarted Data = $list")
+                    (adapter as MetaAdapter).metaList = list
                 }
             }
         }
@@ -97,7 +92,7 @@ class ListFragment : Fragment() {
             viewModel.uiEvent.collect {
                 Log.i(TAG, "ListFragment setupEvent: viewModel.uiEvent.collect")
                 Snackbar.make(binding.root,
-                    R.string.alert_error_loading,
+                    it,
                     Snackbar.LENGTH_LONG
                 )
                     .setAction(getString(R.string.snackbar_btn_reload))
@@ -108,7 +103,6 @@ class ListFragment : Fragment() {
     }
 
     private fun setupImage(src: String?) {
-        Log.i(TAG, "ListFragment setupImage: $src")
         src?.let {
             Glide.with(binding.root)
                 .load(src)
@@ -120,9 +114,7 @@ class ListFragment : Fragment() {
         }
     }
 
-
     private fun setupToolbar(titleText: String) {
-        Log.i(TAG, "ListFragment setupToolbar: $titleText")
         binding.toolbar.apply {
             title = titleText
             subtitle = context.resources.getString(R.string.app_name)

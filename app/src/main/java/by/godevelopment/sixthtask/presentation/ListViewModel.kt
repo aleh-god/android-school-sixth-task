@@ -32,15 +32,9 @@ class ListViewModel @Inject constructor(
     val uiEvent: SharedFlow<String> = _uiEvent
 
     private var fetchJob: Job? = null
-    private val resultState: MutableMap<String, String> = mutableMapOf()
 
     init {
         fetchMetaModel()
-        viewModelScope.launch {
-            listState.collect {
-                Log.i(TAG, "viewModelScope.launch: listState = $it")
-            }
-        }
     }
 
     fun fetchMetaModel() {
@@ -48,7 +42,6 @@ class ListViewModel @Inject constructor(
         fetchJob = viewModelScope.launch {
             convertMetaModelToUiStateModelUseCase()
                 .onStart {
-                    Log.i(TAG, "viewModelScope.launch: .onStart")
                     _uiState.value = UiState(
                         isFetchingData = true
                     )
@@ -62,7 +55,6 @@ class ListViewModel @Inject constructor(
                     _uiEvent.emit(stringHelper.getString(R.string.alert_error_loading))
                 }
                 .collect {
-                    Log.i(TAG, "viewModelScope.launch: .collect = $it")
                     _uiState.value = UiState(
                         isFetchingData = false,
                         title = it.title ?: stringHelper.getString(R.string.alert_error_loading),
@@ -73,29 +65,32 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    fun setResultToList(id: Int, key: String, resultOrNull: String) {
-        Log.i(TAG, "MainViewModel setResultToList: $key to $resultOrNull")
-        resultState[key] = resultOrNull
-        Log.i(TAG, "MainViewModel setResultToList: $resultState")
-//        val newList = listState.value
-//            .filter { it.id != id }
-//            .toMutableList()
-//        val newItem = listState.value
-//            .first { it.id == id }
-//            .copy(result = resultOrNull)
-//        newList.add(newItem)
-//        newList.sortedBy { it.id }
-//        _listState.value = newList
+    fun setResultToList(id: Int, key: String, resultOrNull: String?) {
+        Log.i(TAG, "MainViewModel setResultToList $id: $key to $resultOrNull")
+        resultOrNull?.let { result ->
+            val newList = listState.value.map {
+                if (it.id == id) {
+                    it.copy(
+                        result = result
+                    )
+                } else it
+            }
+            Log.i(TAG, "MainViewModel setResultToList: newList.sortedBy = $newList")
+            _listState.value = newList
+        }
     }
 
     fun sendFormToRemote() {
+        Log.i(TAG, "sendFormToRemote: ${_listState.value.size}")
         viewModelScope.launch {
             try {
+                val resultState = _listState.value
                 val response = convertResultToFormModelUseCase(resultState).result
                 _uiEvent.emit(response)
+                Log.i(TAG, "sendFormToRemote: response = $response")
             } catch (e: Exception) {
-                _uiEvent.emit(e.message.toString())
-                Log.i(TAG, "sendFormToRemote: ${e.message}")
+                _uiEvent.emit(stringHelper.getString(R.string.alert_error_loading))
+                Log.i(TAG, "sendFormToRemote: catch = ${e.message}")
             }
         }
     }

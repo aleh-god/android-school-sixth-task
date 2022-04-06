@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import by.godevelopment.sixthtask.commons.TAG
 import by.godevelopment.sixthtask.databinding.ItemInputTextBinding
 import by.godevelopment.sixthtask.domain.models.ListItemModel
+import kotlin.math.log
 
 class TextViewHolder(
     private val binding: ItemInputTextBinding,
-    private val setResultToHeader: (Int, String, String) -> Unit
+    private val setResultToList: (Int, String, String?) -> Unit
 ) : RecyclerView.ViewHolder(binding.root), MetaViewHolder {
     override fun bind(item: ListItemModel) {
-        Log.i(TAG, "TextViewHolder bind: $item")
+        Log.i(TAG, "TextViewHolder: bind $item")
         binding.fieldName.text = item.title
         binding.inputText.apply {
             var textBuffer: String? = item.result
@@ -20,13 +21,13 @@ class TextViewHolder(
                 setText(it)
                 setSelection(it.length)
             }
-            addTextChangedListener { textBuffer = it.toString() }
+            addTextChangedListener {
+                Log.i(TAG, "TextViewHolder: addTextChangedListener $it")
+                textBuffer = it.toString()
+            }
             setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) {
-                    textBuffer?.let {
-                        setResultToHeader(item.id, item.name, it)
-                    }
-                }
+                Log.i(TAG, "TextViewHolder: setOnFocusChangeListener $hasFocus")
+                if (!hasFocus) { setResultToList(item.id, item.name, textBuffer) }
             }
         }
     }

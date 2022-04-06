@@ -13,15 +13,15 @@ import by.godevelopment.sixthtask.domain.models.ListItemModel
 
 class ListViewHolder(
     private val binding: ItemInputListBinding,
-    private val setResultToHeader: (Int, String, String) -> Unit
+    private val setResultToList: (Int, String, String) -> Unit
 ) : RecyclerView.ViewHolder(binding.root), MetaViewHolder {
     override fun bind(item: ListItemModel) {
         Log.i(TAG, "ListViewHolder bind: $item")
+        val listValues = item.values?.map {
+            it.value
+        } ?: emptyList()
         binding.apply {
             fieldName.text = item.title
-            val listValues = item.values?.map {
-                it.value
-            } ?: emptyList()
             ArrayAdapter(
                 root.context,
                 R.layout.simple_spinner_item,
@@ -31,6 +31,7 @@ class ListViewHolder(
                 inputValue.adapter = adapter
                 if (item.result != null) {
                     val spinnerPos = adapter.getPosition(item.result)
+                    Log.i(TAG, "ListViewHolder: .setSelection $spinnerPos,  ${item.result}")
                     inputValue.setSelection(spinnerPos)
                 }
             }
@@ -43,13 +44,13 @@ class ListViewHolder(
                         p3: Long
                     ) {
                         val choose = listValues[selectedItemPosition]
-                        Log.i(TAG, "ItemViewHolder choose: ${choose}")
-                        setResultToHeader(item.id, item.name, choose)
+                        Log.i(TAG, "ListViewHolder onItemSelected: selectedItemPosition = $selectedItemPosition to ${choose}")
+                        setResultToList(item.id, item.name, choose)
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {
-                        Log.i(TAG, "ItemViewHolder choose: Не выбрано")
-                        setResultToHeader(item.id, item.name, NO_CHOICE_STRING_VALUE)
+                        Log.i(TAG, "ListViewHolder onNothingSelected")
+                        setResultToList(item.id, item.name, NO_CHOICE_STRING_VALUE)
                     }
                 }
         }
