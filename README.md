@@ -1,29 +1,12 @@
-# README #
+## Sixth task: Remote form
 
-This README would normally document whatever steps are necessary to get your application up and running.
+**Technologies used:**
 
-### What is this repository for? ###
+1. RecyclerView
+2. Retrofit
+3. Dagger
+4. Coroutines - Flow
+5. MVVM
+6. SOLID, Clean Architecture
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+<img alt="SixthTaskDemo" src="https://github.com/aleh-god/android-school-sixth-task/blob/master/SixthTaskDemo.gif" />
