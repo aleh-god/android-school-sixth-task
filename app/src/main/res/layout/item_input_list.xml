@@ -15,10 +15,7 @@
         app:layout_constraintEnd_toStartOf="@id/input_value"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:gravity="center"
-        android:textColor="?attr/colorOnBackground"
+        style="@style/Widget.SixthTask.TextView"
         tools:text="Поле выбора одного значения из списка"
         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
         />
@@ -31,9 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/field_name"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:gravity="center"
+        style="@style/Widget.SixthTask.Spinner"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

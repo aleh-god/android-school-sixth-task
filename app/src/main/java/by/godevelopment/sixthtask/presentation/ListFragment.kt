@@ -2,7 +2,6 @@ package by.godevelopment.sixthtask.presentation
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.godevelopment.sixthtask.R
 import by.godevelopment.sixthtask.appComponent
-import by.godevelopment.sixthtask.commons.TAG
 import by.godevelopment.sixthtask.databinding.FragmentListBinding
 import by.godevelopment.sixthtask.di.factory.ViewModelFactory
 import by.godevelopment.sixthtask.domain.models.DialogEvent
@@ -83,7 +81,6 @@ class ListFragment : Fragment() {
             adapter = MetaAdapter(setResultToHeader)
             lifecycleScope.launchWhenStarted {
                 viewModel.listState.collect { list ->
-                    Log.i(TAG, "ListFragment setupUi: launchWhenStarted Data = $list")
                     (adapter as MetaAdapter).metaList = list
                 }
             }
@@ -93,7 +90,6 @@ class ListFragment : Fragment() {
     private fun setupEvent() {
         lifecycleScope.launchWhenStarted {
             viewModel.uiEvent.collect {
-                Log.i(TAG, "ListFragment setupEvent: viewModel.uiEvent.collect")
                 when(it) {
                     is SnackbarEvent -> Snackbar
                             .make(binding.root, it.message, Snackbar.LENGTH_INDEFINITE)

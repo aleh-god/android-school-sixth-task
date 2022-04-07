@@ -1,6 +1,5 @@
 package by.godevelopment.sixthtask.domain.usecases
 
-import android.util.Log
 import by.godevelopment.sixthtask.commons.*
 import by.godevelopment.sixthtask.domain.models.ListItemModel
 import by.godevelopment.sixthtask.domain.models.UiStateModel

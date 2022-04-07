@@ -14,6 +14,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        style="@style/Widget.SixthTask.ToolbarTheme"
+        app:subtitleTextColor="@color/secondaryYellow"
+        app:titleTextColor="@color/secondaryLightYellow"
         />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -25,6 +28,7 @@
         app:layout_constraintTop_toBottomOf="@id/image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
+        style="@style/Widget.SixthTask.RecyclerView"
         />
 
     <Button
@@ -36,6 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/recycler_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0"
+        style="@style/Widget.MaterialComponents.Button"
         android:text="@string/btn_send_result_text"
         />
 
@@ -48,6 +53,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         android:src="@drawable/ic_launcher_foreground"
         android:contentDescription="@string/descr_bottom_image"
+        style="@style/Widget.SixthTask.ImageView"
         />
 
     <ProgressBar

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.SixthTask.ToolbarTheme" parent="@style/Widget.Material3.Toolbar">
+        <item name="android:background">?colorPrimary</item>
+        <item name="titleTextAppearance">@style/CustomTitleTextAppearance</item>
+        <item name="subtitleTextAppearance">@style/CustomSubTitleTextAppearance</item>
+    </style>
+
+    <style name="Widget.SixthTask" parent="">
+        <item name="android:layout_margin">@dimen/main_margin</item>
+    </style>
+
+    <style name="Widget.SixthTask.ImageView">
+    </style>
+
+    <style name="Widget.SixthTask.RecyclerView">
+    </style>
+
+    <style name="Widget.SixthTask.TextView">
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Widget.SixthTask.Spinner">
+        <item name="android:layout_margin">@dimen/main_margin</item>
+        <item name="android:padding">@dimen/main_padding</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>
